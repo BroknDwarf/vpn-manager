@@ -16,6 +16,8 @@ source "$LIB_DIR/doctor.sh"
 # shellcheck source=/dev/null
 source "$LIB_DIR/backup.sh"
 # shellcheck source=/dev/null
+source "$LIB_DIR/restore.sh"
+# shellcheck source=/dev/null
 source "$LIB_DIR/monitor.sh"
 # shellcheck source=/dev/null
 source "$LIB_DIR/logs.sh"
@@ -25,20 +27,26 @@ source "$LIB_DIR/self-update.sh"
 show_help() {
   cat <<'HELP'
 VPN Manager commands:
-  vpn status       Current server and VPN status
-  vpn doctor       Read-only diagnostics
-  vpn backup       Create a backup now
-  vpn monitor      Run one health check
-  vpn logs         Show recent logs
-  vpn self-update  Update VPN Manager from GitHub
-  vpn version      Show installed version
+  vpn status                       Current server and VPN status
+  vpn doctor                       Read-only diagnostics
+  vpn backup                       Create a backup now
+  vpn backup list                  List available backups
+  vpn backup verify [latest|FILE]  Verify archive integrity
+  vpn restore <latest|FILE>        Show restore plan
+  vpn restore <latest|FILE> --confirm
+                                   Restore with emergency rollback
+  vpn monitor                      Run one health check
+  vpn logs                         Show recent logs
+  vpn self-update                  Update VPN Manager from GitHub
+  vpn version                      Show installed version
 HELP
 }
 
 case "${1:-help}" in
   status)      cmd_status ;;
   doctor)      cmd_doctor ;;
-  backup)      cmd_backup ;;
+  backup)      shift; cmd_backup "$@" ;;
+  restore)     shift; cmd_restore "$@" ;;
   monitor)     cmd_monitor ;;
   logs)        cmd_logs ;;
   self-update) cmd_self_update ;;

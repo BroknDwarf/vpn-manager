@@ -12,7 +12,7 @@ fi
 
 SOURCE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-for required in bash tar find awk grep sed ss systemctl; do
+for required in bash tar gzip sha256sum find awk grep sed ss systemctl; do
   if ! command -v "$required" >/dev/null 2>&1; then
     echo "Missing required command: $required"
     exit 1
