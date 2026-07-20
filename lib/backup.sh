@@ -57,7 +57,7 @@ backup_create() {
     fi
 
     (
-      cd "$backup_dir"
+      cd "$backup_dir" || exit 1
       sha256sum "$(basename "$output")" >"$(basename "$checksum_file")"
     )
 
@@ -121,7 +121,7 @@ backup_verify() {
 
   if [[ -f "$checksum_file" ]]; then
     if ! (
-      cd "$archive_dir"
+      cd "$archive_dir" || exit 1
       sha256sum -c "$(basename "$checksum_file")"
     ); then
       log_fail "SHA-256 check failed: $archive"

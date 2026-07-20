@@ -5,6 +5,14 @@ restore_archive_to_root() {
   tar -xzf "$archive" -C /
 }
 
+restart_service_if_needed() {
+  local service_was_active="$1"
+
+  if [[ "$service_was_active" == "yes" ]]; then
+    systemctl start "$XUI_SERVICE" || true
+  fi
+}
+
 cmd_restore() {
   require_root
 
@@ -58,7 +66,7 @@ cmd_restore() {
     log_fail "Restore extraction failed; rolling back"
     restore_archive_to_root "$emergency_backup" || true
     systemctl daemon-reload
-    [[ "$service_was_active" == "yes" ]] && systemctl start "$XUI_SERVICE" || true
+    restart_service_if_needed "$service_was_active"
     return 1
   fi
 
@@ -68,7 +76,7 @@ cmd_restore() {
     log_fail "Restored Xray binary or config is missing; rolling back"
     restore_archive_to_root "$emergency_backup" || true
     systemctl daemon-reload
-    [[ "$service_was_active" == "yes" ]] && systemctl start "$XUI_SERVICE" || true
+    restart_service_if_needed "$service_was_active"
     return 1
   fi
 
@@ -77,7 +85,7 @@ cmd_restore() {
     log_fail "Restored Xray configuration is invalid; rolling back"
     restore_archive_to_root "$emergency_backup" || true
     systemctl daemon-reload
-    [[ "$service_was_active" == "yes" ]] && systemctl start "$XUI_SERVICE" || true
+    restart_service_if_needed "$service_was_active"
     return 1
   fi
 
