@@ -18,6 +18,8 @@ source "$LIB_DIR/backup.sh"
 # shellcheck source=/dev/null
 source "$LIB_DIR/restore.sh"
 # shellcheck source=/dev/null
+source "$LIB_DIR/report.sh"
+# shellcheck source=/dev/null
 source "$LIB_DIR/monitor.sh"
 # shellcheck source=/dev/null
 source "$LIB_DIR/logs.sh"
@@ -35,6 +37,7 @@ VPN Manager commands:
   vpn restore <latest|FILE>        Show restore plan
   vpn restore <latest|FILE> --confirm
                                    Restore with emergency rollback
+  vpn report                       Create a sanitized diagnostic report
   vpn monitor                      Run one health check
   vpn logs                         Show recent logs
   vpn self-update                  Update VPN Manager from GitHub
@@ -47,6 +50,7 @@ case "${1:-help}" in
   doctor)      cmd_doctor ;;
   backup)      shift; cmd_backup "$@" ;;
   restore)     shift; cmd_restore "$@" ;;
+  report)      cmd_report ;;
   monitor)     cmd_monitor ;;
   logs)        cmd_logs ;;
   self-update) cmd_self_update ;;
