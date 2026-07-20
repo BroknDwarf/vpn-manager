@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+INSTALL_DIR="${VPN_MANAGER_INSTALL_DIR:-/opt/vpn-manager}"
+LIB_DIR="$INSTALL_DIR/lib"
+
+# shellcheck source=/dev/null
+source "$LIB_DIR/common.sh"
+
+VPN_MANAGER_VERSION="$(cat "$INSTALL_DIR/VERSION" 2>/dev/null || echo unknown)"
+
+# shellcheck source=/dev/null
+source "$LIB_DIR/status.sh"
+# shellcheck source=/dev/null
+source "$LIB_DIR/doctor.sh"
+# shellcheck source=/dev/null
+source "$LIB_DIR/backup.sh"
+# shellcheck source=/dev/null
+source "$LIB_DIR/monitor.sh"
+# shellcheck source=/dev/null
+source "$LIB_DIR/logs.sh"
+# shellcheck source=/dev/null
+source "$LIB_DIR/self-update.sh"
+
+show_help() {
+  cat <<'HELP'
+VPN Manager commands:
+  vpn status       Current server and VPN status
+  vpn doctor       Read-only diagnostics
+  vpn backup       Create a backup now
+  vpn monitor      Run one health check
+  vpn logs         Show recent logs
+  vpn self-update  Update VPN Manager from GitHub
+  vpn version      Show installed version
+HELP
+}
+
+case "${1:-help}" in
+  status)      cmd_status ;;
+  doctor)      cmd_doctor ;;
+  backup)      cmd_backup ;;
+  monitor)     cmd_monitor ;;
+  logs)        cmd_logs ;;
+  self-update) cmd_self_update ;;
+  version)     printf '%s\n' "$VPN_MANAGER_VERSION" ;;
+  help|--help|-h) show_help ;;
+  *)
+    log_fail "Unknown command: $1"
+    show_help
+    exit 2
+    ;;
+esac

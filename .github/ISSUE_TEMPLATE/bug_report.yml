@@ -1,0 +1,24 @@
+name: Bug report
+description: Сообщить об ошибке
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Описание
+      description: Что произошло?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Окружение
+      description: Ubuntu, версия VPN Manager, версия 3x-ui/Xray
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи
+      description: Вывод vpn doctor и vpn logs без секретов

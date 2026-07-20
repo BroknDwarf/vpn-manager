@@ -1,0 +1,13 @@
+# VPN Manager configuration
+
+BASE_DIR="/opt/vpn-manager"
+BACKUP_RETENTION_DAYS="7"
+MONITOR_DISK_FAIL_PERCENT="90"
+XRAY_BIN="/usr/local/x-ui/bin/xray-linux-amd64"
+XRAY_CONFIG="/usr/local/x-ui/bin/config.json"
+XUI_SERVICE="x-ui"
+VPN_PORT="443"
+
+# Set after publishing repository:
+GITHUB_REPOSITORY="BroknDwarf/vpn-manager"
+GITHUB_BRANCH="main"
